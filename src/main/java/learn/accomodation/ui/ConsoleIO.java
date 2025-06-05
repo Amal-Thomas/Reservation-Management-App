@@ -89,4 +89,18 @@ public class ConsoleIO {
             }
         }
     }
+
+    public LocalDate readLocalDate(String prompt, boolean isEditing) {
+        while (true) {
+            String input = readRequiredString(prompt);
+            if (isEditing && input.isBlank()) {
+                return null;
+            }
+            try {
+                return LocalDate.parse(input, formatter);
+            } catch (DateTimeParseException ex) {
+                println(INVALID_DATE);
+            }
+        }
+    }
 }

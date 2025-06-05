@@ -58,22 +58,22 @@ public class Controller {
 
     // top level menu
     private void viewReservationsForHost() throws DataException {
-        view.printHeader(MainMenuOption.VIEW_RESERVATIONS_FOR_HOST.getMessage());
+        view.displayHeader(MainMenuOption.VIEW_RESERVATIONS_FOR_HOST.getMessage());
         Host host = getHost();
-        view.printHostNameAndAddress(host);
+        view.displayHostNameAndAddress(host);
         List<Reservation> reservations = reservationService.findForHost(host);
-        view.printReservations(reservations);
+        view.displayReservations(reservations);
         view.enterToContinue();
     }
 
     private void addReservation() throws DataException {
-        view.printHeader(MainMenuOption.MAKE_A_RESERVATION.getMessage());
+        view.displayHeader(MainMenuOption.MAKE_A_RESERVATION.getMessage());
         Guest guest = getGuest();
         Host host = getHost();
 
-        view.printHostNameAndAddress(host);
+        view.displayHostNameAndAddress(host);
         List<Reservation> reservations = reservationService.findForHost(host);
-        view.printReservations(reservations);
+        view.displayReservations(reservations);
         Reservation reservation = view.makeReservation(guest, host);
         Result result = reservationService.add(reservation);
 
@@ -87,13 +87,16 @@ public class Controller {
     }
 
     private void updateReservation() throws DataException {
-        view.printHeader(MainMenuOption.EDIT_A_RESERVATION.getMessage());
+        view.displayHeader(MainMenuOption.EDIT_A_RESERVATION.getMessage());
         Guest guest = getGuest();
         Host host = getHost();
 
-        view.printHostNameAndAddress(host);
+        view.displayHostNameAndAddress(host);
         List<Reservation> reservations = reservationService.findForGuestAndHost(host, guest);
         Reservation oldReservation = view.chooseReservation(reservations);
+        if (oldReservation == null) {
+            return;
+        }
         Reservation newReservation = view.update(oldReservation);
         Result result = reservationService.update(newReservation);
 
@@ -107,13 +110,16 @@ public class Controller {
     }
 
     private void deleteReservation() throws DataException {
-        view.printHeader(MainMenuOption.CANCEL_A_RESERVATION.getMessage());
+        view.displayHeader(MainMenuOption.CANCEL_A_RESERVATION.getMessage());
         Guest guest = getGuest();
         Host host = getHost();
 
-        view.printHostNameAndAddress(host);
+        view.displayHostNameAndAddress(host);
         List<Reservation> reservations = reservationService.findForGuestAndHost(host, guest);
         Reservation reservation = view.chooseReservation(reservations);
+        if (reservation == null) {
+            return;
+        }
         Result result = reservationService.delete(reservation);
 
         if (!result.isSuccess()) {
