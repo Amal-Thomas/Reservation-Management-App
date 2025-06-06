@@ -1,4 +1,19 @@
 package learn.accomodation.data;
 
+import learn.accomodation.models.Guest;
+import learn.accomodation.models.Host;
+import learn.accomodation.models.Reservation;
+
+import java.util.List;
+
 public interface ReservationRepository {
+    List<Reservation> findForHost(Host host);
+
+    List<Reservation> findForGuestAndHost(Host host, Guest guest);
+
+    Reservation add(Reservation reservation);
+
+    boolean update(Reservation reservation);
+
+    boolean delete(Reservation reservation);
 }
