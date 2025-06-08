@@ -1,4 +1,91 @@
 package learn.accomodation.data;
 
-public class ReservationFileRepository {
+import learn.accomodation.models.Guest;
+import learn.accomodation.models.Host;
+import learn.accomodation.models.Reservation;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ReservationFileRepository implements ReservationRepository{
+    private static final String DELIMITER = ",";
+    private final String directory;
+
+    public ReservationFileRepository(String directory) {
+        this.directory = directory;
+    }
+
+    @Override
+    public List<Reservation> findForHost(Host host) {
+
+        ArrayList<Reservation> result = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath(host.getHostId())))) {
+            reader.readLine(); // read header
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+                Reservation reservation = deserialize(line, host.getHostId());
+                if (reservation != null) {
+                    result.add(reservation);
+                }
+            }
+        } catch (IOException ex) {
+            // don't throw on read
+        }
+        return result;
+    }
+
+    public List<Reservation> findForGuestAndHost(Host host, Guest guest) {
+
+    }
+
+    public Reservation add(Reservation reservation) {
+
+    }
+
+    public boolean update(Reservation reservation) {
+
+    }
+
+    public boolean delete(Reservation reservation) {
+
+    }
+
+    private String serialize(Reservation reservation) {
+
+    }
+
+    private Reservation deserialize(String line, String hostId) {
+        String[] fields = line.split(DELIMITER, -1);
+        if (fields.length == 5) {
+            Reservation reservation = new Reservation();
+            reservation.setId(fields[0]);
+            reservation.setStartDate(LocalDate.parse(fields[1]));
+            reservation.setEndDate(LocalDate.parse(fields[2]));
+            reservation.setTotal(new BigDecimal(fields[4]));
+
+            Host host = new Host();
+            host.setHostId(hostId);
+            reservation.setHost(host);
+
+            Guest guest = new Guest();
+            guest.setGuestId(Integer.parseInt(fields[3]));
+            reservation.setGuest(guest);
+            return reservation;
+        }
+        return null;
+    }
+
+    private void writeAll(List<Reservation> reservations, Host host) {
+
+    }
+
+    private String getFilePath(String hostId) {
+        return Paths.get(directory, hostId + ".csv").toString();
+    }
 }
