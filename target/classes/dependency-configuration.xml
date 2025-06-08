@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Repository -->
+    <bean id="reservationFileRepository" class="learn.accomodation.data.ReservationFileRepository">
+        <constructor-arg value="./data/reservations"/>
+    </bean>
+    <bean id="hostFileRepository" class="learn.accomodation.data.HostFileRepository">
+        <constructor-arg value="./data/hosts.csv"/>
+    </bean>
+    <bean id="guestFileRepository" class="learn.accomodation.data.GuestFileRepository">
+        <constructor-arg value="./data/guests.csv"/>
+    </bean>
+
+    <!-- Service -->
+    <bean id="reservationService" class="learn.accomodation.domain.ReservationService">
+        <constructor-arg ref="guestFileRepository"/>
+        <constructor-arg ref="hostFileRepository"/>
+        <constructor-arg ref="reservationFileRepository"/>
+    </bean>
+    <bean id="hostService" class="learn.accomodation.domain.HostService">
+        <constructor-arg ref="hostFileRepository"/>
+    </bean>
+    <bean id="guestService" class="learn.accomodation.domain.GuestService">
+        <constructor-arg ref="guestFileRepository"/>
+    </bean>
+
+    <!-- TextIO -->
+    <bean id="io" class="learn.accomodation.ui.ConsoleIO"/>
+
+    <!-- View -->
+    <bean id="view" class="learn.accomodation.ui.View">
+        <constructor-arg ref="io"/>
+    </bean>
+
+    <!-- Controller -->
+    <bean class="learn.accomodation.ui.Controller">
+        <constructor-arg ref="guestService"/>
+        <constructor-arg ref="hostService"/>
+        <constructor-arg ref="reservationService"/>
+        <constructor-arg ref="view"/>
+    </bean>
+</beans>

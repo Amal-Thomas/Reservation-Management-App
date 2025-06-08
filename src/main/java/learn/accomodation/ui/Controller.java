@@ -60,6 +60,9 @@ public class Controller {
     private void viewReservationsForHost() throws DataException {
         view.displayHeader(MainMenuOption.VIEW_RESERVATIONS_FOR_HOST.getMessage());
         Host host = getHost();
+        if (host == null) {
+            return;
+        }
         view.displayHostNameAndAddress(host);
         List<Reservation> reservations = reservationService.findForHost(host);
         view.displayReservations(reservations);
