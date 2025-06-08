@@ -24,6 +24,6 @@ public class HostRepositoryDouble implements HostRepository{
 
     @Override
     public Host findById(String id) {
-        return HOST;
+        return id.equals("3edda6bc-ab95-49a8-8962-d50b53f84b15")? HOST:null;
     }
 }

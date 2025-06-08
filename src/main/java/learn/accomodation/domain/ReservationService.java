@@ -166,13 +166,13 @@ public class ReservationService {
 
     private void validateChildrenExist(Reservation reservation, Result result) {
         //The guest and host must already exist in the "database".
-        if (reservation.getHost().getEmail() == null
-                || hostRepository.findByEmail(reservation.getHost().getEmail()) == null) {
+        if (reservation.getHost().getHostId() == null
+                || hostRepository.findById(reservation.getHost().getHostId()) == null) {
             result.addMessage("Host does not exist.");
         }
 
-        if (reservation.getGuest().getEmail() == null
-                || guestRepository.findByEmail(reservation.getGuest().getEmail()) == null) {
+        if (reservation.getGuest().getGuestId() == 0
+                || guestRepository.findById(reservation.getGuest().getGuestId()) == null) {
             result.addMessage("Guest does not exist.");
         }
     }

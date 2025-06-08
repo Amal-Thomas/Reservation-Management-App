@@ -18,5 +18,6 @@ public class GuestRepositoryDouble implements GuestRepository{
     }
 
     @Override
-    public Guest findById(int id) { return GUEST; }
+    public Guest findById(int id) {
+        return id == 1 ? GUEST:null; }
 }
