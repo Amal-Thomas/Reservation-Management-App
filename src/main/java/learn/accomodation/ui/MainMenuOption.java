@@ -8,10 +8,10 @@ public enum MainMenuOption {
     EDIT_A_RESERVATION(3, "Edit a Reservation"),
     CANCEL_A_RESERVATION(4, "Cancel a Reservation");
 
-    private int value;
-    private String message;
+    private final int value;
+    private final String message;
 
-    private MainMenuOption(int value, String message) {
+    MainMenuOption(int value, String message) {
         this.value = value;
         this.message = message;
     }
