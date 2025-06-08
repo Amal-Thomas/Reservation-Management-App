@@ -9,7 +9,7 @@ import java.util.List;
 public interface ReservationRepository {
     List<Reservation> findForHost(Host host);
 
-    List<Reservation> findForGuestAndHost(Host host, Guest guest);
+    List<Reservation> findForGuestAndHost(Guest guest, Host host);
 
     Reservation add(Reservation reservation) throws DataException;
 

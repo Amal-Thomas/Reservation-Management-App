@@ -39,7 +39,7 @@ public class ReservationFileRepository implements ReservationRepository {
     }
 
     @Override
-    public List<Reservation> findForGuestAndHost(Host host, Guest guest) {
+    public List<Reservation> findForGuestAndHost(Guest guest, Host host) {
         ArrayList<Reservation> reservationsForHost = new ArrayList<>(findForHost(host));
         ArrayList<Reservation> result = new ArrayList<>();
         for (Reservation reservation: reservationsForHost) {

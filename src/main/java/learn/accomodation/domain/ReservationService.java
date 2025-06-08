@@ -27,8 +27,8 @@ public class ReservationService {
         return reservationRepository.findForHost(host);
     }
 
-    public List<Reservation> findForGuestAndHost(Host host, Guest guest) {
-        return reservationRepository.findForGuestAndHost(host, guest);
+    public List<Reservation> findForGuestAndHost(Guest guest, Host host) {
+        return reservationRepository.findForGuestAndHost(guest, host);
     }
 
     public Result add(Reservation reservation) throws DataException {
@@ -203,7 +203,7 @@ public class ReservationService {
 
     private void validateFutureReservation(Reservation reservation, Result result) {
         //The reservation to be edited/deleted must be in the future
-        List<Reservation> reservations = reservationRepository.findForGuestAndHost(reservation.getHost(), reservation.getGuest());
+        List<Reservation> reservations = reservationRepository.findForGuestAndHost(reservation.getGuest(), reservation.getHost());
         for (Reservation r : reservations) {
             if (r.getId() == reservation.getId()) {
                 if (!r.getStartDate().isAfter(LocalDate.now())) {

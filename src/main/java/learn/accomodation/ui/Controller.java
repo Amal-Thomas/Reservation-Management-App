@@ -92,7 +92,7 @@ public class Controller {
         Host host = getHost();
 
         view.displayHostNameAndAddress(host);
-        List<Reservation> reservations = reservationService.findForGuestAndHost(host, guest);
+        List<Reservation> reservations = reservationService.findForGuestAndHost(guest, host);
         Reservation oldReservation = view.chooseReservation(reservations);
         if (oldReservation == null) {
             return;
@@ -115,7 +115,7 @@ public class Controller {
         Host host = getHost();
 
         view.displayHostNameAndAddress(host);
-        List<Reservation> reservations = reservationService.findForGuestAndHost(host, guest);
+        List<Reservation> reservations = reservationService.findForGuestAndHost(guest, host);
         Reservation reservation = view.chooseReservation(reservations);
         if (reservation == null) {
             return;
