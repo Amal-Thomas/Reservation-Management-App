@@ -43,6 +43,8 @@ public class View {
         if (newEndDate != null) {
             newReservation.setEndDate(newEndDate);
         }
+
+        newReservation.setTotal(newReservation.calculateTotal());
         displaySummary(newReservation);
         if (io.readBoolean("Is this okay? [y/n]: ")) {
             newReservation.setHost(oldReservation.getHost());
@@ -89,9 +91,7 @@ public class View {
         reservation.setGuest(guest);
         reservation.setStartDate(io.readLocalDate("Start (MM/dd/yyyy): "));
         reservation.setEndDate(io.readLocalDate("End (MM/dd/yyyy): "));
-        reservation.setTotal(reservation.calculateTotal(
-                reservation.getStartDate(), reservation.getEndDate()
-        ));
+        reservation.setTotal(reservation.calculateTotal());
         return reservation;
     }
 
