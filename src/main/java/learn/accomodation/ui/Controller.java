@@ -115,7 +115,7 @@ public class Controller {
         Host host = getHost();
 
         view.displayHostNameAndAddress(host);
-        List<Reservation> reservations = reservationService.findForGuestAndHost(guest, host);
+        List<Reservation> reservations = reservationService.findFutureReservations(guest, host);
         Reservation reservation = view.chooseReservation(reservations);
         if (reservation == null) {
             return;

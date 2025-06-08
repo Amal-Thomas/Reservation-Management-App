@@ -10,6 +10,7 @@ import learn.accomodation.models.Reservation;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReservationService {
 
@@ -29,6 +30,12 @@ public class ReservationService {
 
     public List<Reservation> findForGuestAndHost(Guest guest, Host host) {
         return reservationRepository.findForGuestAndHost(guest, host);
+    }
+
+    public List<Reservation> findFutureReservations(Guest guest, Host host) {
+        return findForGuestAndHost(guest, host).stream()
+                .filter(i -> i.getStartDate().isAfter(LocalDate.now()))
+                .collect(Collectors.toList());
     }
 
     public Result add(Reservation reservation) throws DataException {
