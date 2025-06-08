@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationFileRepository implements ReservationRepository{
+public class ReservationFileRepository implements ReservationRepository {
     private static final String DELIMITER = ",";
     private static final String HEADER = "id,start_date,end_date,guest_id,total";
     private final String directory;
@@ -38,6 +38,7 @@ public class ReservationFileRepository implements ReservationRepository{
         return result;
     }
 
+    @Override
     public List<Reservation> findForGuestAndHost(Host host, Guest guest) {
         ArrayList<Reservation> reservationsForHost = new ArrayList<>(findForHost(host));
         ArrayList<Reservation> result = new ArrayList<>();
@@ -49,7 +50,8 @@ public class ReservationFileRepository implements ReservationRepository{
         return result;
     }
 
-    public Reservation add(Reservation reservation) {
+    @Override
+    public Reservation add(Reservation reservation) throws DataException {
         List<Reservation> all = findForHost(reservation.getHost());
         reservation.setId(getNextId(all));
         all.add(reservation);
@@ -57,7 +59,8 @@ public class ReservationFileRepository implements ReservationRepository{
         return reservation;
     }
 
-    public boolean update(Reservation reservation) throws DataException{
+    @Override
+    public boolean update(Reservation reservation) throws DataException {
         List<Reservation> all = findForHost(reservation.getHost());
         for (int i = 0; i < all.size(); i++) {
             if (all.get(i).getId() == reservation.getId()) {
@@ -69,6 +72,7 @@ public class ReservationFileRepository implements ReservationRepository{
         return false;
     }
 
+    @Override
     public boolean delete(Reservation reservation) throws DataException {
         List<Reservation> all = findForHost(reservation.getHost());
         for (int i = 0; i < all.size(); i++) {

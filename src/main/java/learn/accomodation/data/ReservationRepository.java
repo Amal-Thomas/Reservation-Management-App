@@ -11,9 +11,9 @@ public interface ReservationRepository {
 
     List<Reservation> findForGuestAndHost(Host host, Guest guest);
 
-    Reservation add(Reservation reservation);
+    Reservation add(Reservation reservation) throws DataException;
 
-    boolean update(Reservation reservation);
+    boolean update(Reservation reservation) throws DataException;
 
-    boolean delete(Reservation reservation);
+    boolean delete(Reservation reservation) throws DataException;
 }
