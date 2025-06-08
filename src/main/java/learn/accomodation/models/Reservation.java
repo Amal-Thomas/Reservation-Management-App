@@ -20,7 +20,7 @@ public class Reservation {
         this.host = host;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -64,11 +64,11 @@ public class Reservation {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
-        return Objects.equals(host, that.host) && Objects.equals(hostId, that.hostId) && Objects.equals(guest, that.guest) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(total, that.total);
+        return Objects.equals(id, that.id) && Objects.equals(host, that.host) && Objects.equals(guest, that.guest) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(total, that.total);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(host, hostId, guest, startDate, endDate, total);
+        return Objects.hash(id, host, guest, startDate, endDate, total);
     }
 }

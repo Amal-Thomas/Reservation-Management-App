@@ -76,7 +76,7 @@ public class ReservationFileRepository implements ReservationRepository {
     public boolean delete(Reservation reservation) throws DataException {
         List<Reservation> all = findForHost(reservation.getHost());
         for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getId() == reservation.getId) {
+            if (all.get(i).getId() == reservation.getId()) {
                 all.remove(i);
                 writeAll(all, reservation.getHost().getHostId());
                 return true;
@@ -98,7 +98,7 @@ public class ReservationFileRepository implements ReservationRepository {
         String[] fields = line.split(DELIMITER, -1);
         if (fields.length == 5) {
             Reservation reservation = new Reservation();
-            reservation.setId(fields[0]);
+            reservation.setId(Integer.parseInt(fields[0]));
             reservation.setStartDate(LocalDate.parse(fields[1]));
             reservation.setEndDate(LocalDate.parse(fields[2]));
             reservation.setTotal(new BigDecimal(fields[4]));
