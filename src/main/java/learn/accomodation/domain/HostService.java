@@ -11,6 +11,6 @@ public class HostService {
     }
 
     public Host findByEmail(String email) {
-        return repository.findHostByEmail(email);
+        return repository.findByEmail(email);
     }
 }

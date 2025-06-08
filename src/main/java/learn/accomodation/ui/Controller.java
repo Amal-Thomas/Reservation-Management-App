@@ -139,6 +139,6 @@ public class Controller {
 
     private Host getHost() {
         String hostEmail = view.getHostEmail();
-        return hostService.findHostByEmail(hostEmail);
+        return hostService.findByEmail(hostEmail);
     }
 }
