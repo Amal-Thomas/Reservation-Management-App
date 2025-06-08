@@ -186,7 +186,7 @@ public class ReservationService {
 
     private void validateOverlap(Reservation reservation, Result result) {
         //The reservation may never overlap existing reservation dates.
-        List<Reservation> reservations = reservationRepository.findForHost(reservation.getHost());
+        List<Reservation> reservations = findForHost(reservation.getHost());
 
         for (Reservation r : reservations) {
             /* For updating a reservation, overlap should not be checked between the
@@ -217,7 +217,7 @@ public class ReservationService {
 
     private void validateFutureReservation(Reservation reservation, Result result) {
         //The reservation to be edited/deleted must be in the future
-        List<Reservation> reservations = reservationRepository.findForGuestAndHost(reservation.getGuest(), reservation.getHost());
+        List<Reservation> reservations = findForGuestAndHost(reservation.getGuest(), reservation.getHost());
         for (Reservation r : reservations) {
             if (r.getId() == reservation.getId()) {
                 if (!r.getStartDate().isAfter(LocalDate.now())) {

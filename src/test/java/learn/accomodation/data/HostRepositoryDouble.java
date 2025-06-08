@@ -21,4 +21,9 @@ public class HostRepositoryDouble implements HostRepository{
     public Host findByEmail(String email) {
         return HOST;
     }
+
+    @Override
+    public Host findById(String id) {
+        return HOST;
+    }
 }

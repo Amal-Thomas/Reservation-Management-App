@@ -34,6 +34,26 @@ public class GuestFileRepository implements GuestRepository {
         return null;
     }
 
+    @Override
+    public Guest findById(int id) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+
+            reader.readLine(); // read header
+
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+                Guest guest = deserialize(line);
+                if (guest != null) {
+                    if (guest.getGuestId() == id) {
+                        return guest;
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            // don't throw on read
+        }
+        return null;
+    }
+
     private Guest deserialize(String line) {
         String[] fields = line.split(DELIMITER, -1);
         if (fields.length == 6) {

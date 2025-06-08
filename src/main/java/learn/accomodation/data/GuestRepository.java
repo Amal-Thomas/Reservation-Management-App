@@ -4,4 +4,5 @@ import learn.accomodation.models.Guest;
 
 public interface GuestRepository {
     Guest findByEmail(String email);
+    Guest findById(int id);
 }

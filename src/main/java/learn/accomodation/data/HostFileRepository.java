@@ -39,6 +39,26 @@ public class HostFileRepository implements HostRepository {
         return null;
     }
 
+    @Override
+    public Host findById(String id) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+
+            reader.readLine(); // read header
+
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+                Host host = deserialize(line);
+                if (host != null) {
+                    if (host.getHostId().equalsIgnoreCase(id)) {
+                        return host;
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            // don't throw on read
+        }
+        return null;
+    }
+
     private Host deserialize(String line) {
         String[] fields = line.split(DELIMITER, -1);
         if (fields.length == 10) {

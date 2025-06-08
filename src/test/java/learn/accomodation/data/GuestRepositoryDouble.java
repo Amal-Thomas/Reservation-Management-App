@@ -16,4 +16,7 @@ public class GuestRepositoryDouble implements GuestRepository{
     public Guest findByEmail(String email) {
         return GUEST;
     }
+
+    @Override
+    public Guest findById(int id) { return GUEST; }
 }
