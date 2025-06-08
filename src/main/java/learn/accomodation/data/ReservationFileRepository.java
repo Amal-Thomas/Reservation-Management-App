@@ -61,8 +61,16 @@ public class ReservationFileRepository implements ReservationRepository{
 
     }
 
-    public boolean delete(Reservation reservation) {
-
+    public boolean delete(Reservation reservation) throws DataException {
+        List<Reservation> all = findForHost(reservation.getHost());
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getId() == reservation.getId) {
+                all.remove(i);
+                writeAll(all, reservation.getHost().getHostId());
+                return true;
+            }
+        }
+        return false;
     }
 
     private String serialize(Reservation reservation) {
