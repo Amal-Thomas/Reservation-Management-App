@@ -1,17 +1,11 @@
 package learn.accomodation.ui;
 
-import learn.accomodation.domain.Result;
 import learn.accomodation.models.Guest;
 import learn.accomodation.models.Host;
 import learn.accomodation.models.Reservation;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class View {
 
@@ -37,11 +31,11 @@ public class View {
     public Reservation update(Reservation oldReservation) {
         Reservation newReservation = new Reservation();
         displayHeader(String.format(
-                "Editing Reservation %d", oldReservation.getReservationId));
+                "Editing Reservation %d", oldReservation.getId()));
         LocalDate newStartDate = io.readLocalDate(String.format(
-                "Start (%s): ", oldReservation.getStartDate), true);
+                "Start (%s): ", oldReservation.getStartDate()), true);
         LocalDate newEndDate = io.readLocalDate(String.format(
-                "End (%s): ", oldReservation.getEndDate), true);
+                "End (%s): ", oldReservation.getEndDate()), true);
 
         if (newStartDate != null) {
             newReservation.setStartDate(newStartDate);
@@ -53,14 +47,14 @@ public class View {
         if (io.readBoolean("Is this okay? [y/n]: ")) {
             newReservation.setHost(oldReservation.getHost());
             newReservation.setGuest(oldReservation.getGuest());
-            newReservation.setReservationId(oldReservation.getReservationId());
+            newReservation.setId(oldReservation.getId());
             return newReservation;
         }
         return oldReservation;
     }
 
     public Reservation chooseReservation(List<Reservation> reservations) {
-        if (reservations.size() == 0) {
+        if (reservations.isEmpty()) {
             io.println("No reservations found");
             return null;
         }
@@ -69,12 +63,12 @@ public class View {
         for (Reservation reservation : reservations) {
             io.printf("%d. ID: %d, %s - %s, Guest: %s, %s, Email: %s%n",
                     index,
-                    reservation.getReservationID(),
+                    reservation.getId(),
                     reservation.getStartDate(),
                     reservation.getEndDate(),
-                    reservation.getGuest.getLastname(),
-                    reservation.getGuest.getFirstname(),
-                    reservation.getGuest.getEmail()
+                    reservation.getGuest().getLastName(),
+                    reservation.getGuest().getFirstName(),
+                    reservation.getGuest().getEmail()
             );
         }
         index--;
@@ -96,7 +90,7 @@ public class View {
         reservation.setStartDate(io.readLocalDate("Start (MM/dd/yyyy): "));
         reservation.setEndDate(io.readLocalDate("End (MM/dd/yyyy): "));
         reservation.setTotal(reservation.calculateTotal(
-                reservation.getStartDate, reservation.getEndDate
+                reservation.getStartDate(), reservation.getEndDate()
         ));
         return reservation;
     }
@@ -143,25 +137,24 @@ public class View {
         }
         for (Reservation reservation : reservations) {
             io.printf("ID: %d, %s - %s, Guest: %s, %s, Email: %s%n",
-                    reservation.getReservationID(),
+                    reservation.getId(),
                     reservation.getStartDate(),
                     reservation.getEndDate(),
-                    reservation.getGuest.getLastname(),
-                    reservation.getGuest.getFirstname(),
-                    reservation.getGuest.getEmail()
+                    reservation.getGuest().getLastName(),
+                    reservation.getGuest().getFirstName(),
+                    reservation.getGuest().getEmail()
             );
         }
     }
 
     public void displayHostNameAndAddress(Host host) {
-        displayHeader(String.format("%s: %s, %s", host.getLastName, host.getCity(), host.getState()));
+        displayHeader(String.format("%s: %s, %s", host.getLastName(), host.getCity(), host.getState()));
     }
 
     public void displaySummary(Reservation reservation) {
         displayHeader("Summary");
-        io.println(reservation.getStartDate());
-        io.println(reservation.getEndDate());
-        io.println(reservation.getTotal());
-        io.println(reservation.getTotal());
+        io.println(reservation.getStartDate().toString());
+        io.println(reservation.getEndDate().toString());
+        io.println(reservation.getTotal().toString());
     }
 }
