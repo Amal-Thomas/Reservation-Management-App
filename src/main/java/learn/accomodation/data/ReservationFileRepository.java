@@ -4,10 +4,7 @@ import learn.accomodation.models.Guest;
 import learn.accomodation.models.Host;
 import learn.accomodation.models.Reservation;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -16,6 +13,7 @@ import java.util.List;
 
 public class ReservationFileRepository implements ReservationRepository{
     private static final String DELIMITER = ",";
+    private static final String HEADER = "id,start_date,end_date,guest_id,total";
     private final String directory;
 
     public ReservationFileRepository(String directory) {
@@ -52,7 +50,11 @@ public class ReservationFileRepository implements ReservationRepository{
     }
 
     public Reservation add(Reservation reservation) {
-
+        List<Reservation> all = findForHost(reservation.getHost());
+        reservation.setId(getNextId(all));
+        all.add(reservation);
+        writeAll(all, reservation.getHost().getHostId());
+        return reservation;
     }
 
     public boolean update(Reservation reservation) {
@@ -64,7 +66,12 @@ public class ReservationFileRepository implements ReservationRepository{
     }
 
     private String serialize(Reservation reservation) {
-
+        return String.format("%s,%s,%s,%s,%s",
+                reservation.getId(),
+                reservation.getStartDate(),
+                reservation.getEndDate(),
+                reservation.getGuest().getGuestId(),
+                reservation.getTotal().toString());
     }
 
     private Reservation deserialize(String line, String hostId) {
@@ -88,8 +95,23 @@ public class ReservationFileRepository implements ReservationRepository{
         return null;
     }
 
-    private void writeAll(List<Reservation> reservations, Host host) {
+    private void writeAll(List<Reservation> reservations, String hostId) throws DataException {
+        try (PrintWriter writer = new PrintWriter(getFilePath(hostId))) {
+            writer.println(HEADER);
+            for (Reservation reservation : reservations) {
+                writer.println(serialize(reservation));
+            }
+        } catch (FileNotFoundException ex) {
+            throw new DataException(ex);
+        }
+    }
 
+    private int getNextId(List<Reservation> reservations) {
+        int nextId = 0;
+        for (Reservation reservation : reservations) {
+            nextId = Math.max(nextId, reservation.getId());
+        }
+        return nextId + 1;
     }
 
     private String getFilePath(String hostId) {
