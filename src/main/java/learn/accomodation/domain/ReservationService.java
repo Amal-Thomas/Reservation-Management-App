@@ -25,11 +25,18 @@ public class ReservationService {
     }
 
     public List<Reservation> findForHost(Host host) {
-        return reservationRepository.findForHost(host);
+        List<Reservation> result = reservationRepository.findForHost(host);
+        for (Reservation r: result) {
+            r.setHost(hostRepository.findById(r.getHost().getHostId()));
+            r.setGuest(guestRepository.findById(r.getGuest().getGuestId()));
+        }
+        return result;
     }
 
     public List<Reservation> findForGuestAndHost(Guest guest, Host host) {
-        return reservationRepository.findForGuestAndHost(guest, host);
+        return findForHost(host).stream()
+                .filter(i -> i.getGuest().getGuestId() == guest.getGuestId())
+                .collect(Collectors.toList());
     }
 
     public List<Reservation> findFutureReservations(Guest guest, Host host) {

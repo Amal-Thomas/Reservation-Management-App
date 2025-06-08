@@ -38,11 +38,6 @@ public class ReservationRepositoryDouble implements ReservationRepository {
     }
 
     @Override
-    public List<Reservation> findForGuestAndHost(Guest guest, Host host) {
-        return RESERVATIONS;
-    }
-
-    @Override
     public Reservation add(Reservation reservation) throws DataException {
         return reservation;
     }

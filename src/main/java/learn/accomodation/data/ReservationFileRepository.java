@@ -39,18 +39,6 @@ public class ReservationFileRepository implements ReservationRepository {
     }
 
     @Override
-    public List<Reservation> findForGuestAndHost(Guest guest, Host host) {
-        ArrayList<Reservation> reservationsForHost = new ArrayList<>(findForHost(host));
-        ArrayList<Reservation> result = new ArrayList<>();
-        for (Reservation reservation: reservationsForHost) {
-            if (reservation.getGuest().getGuestId() == guest.getGuestId()) {
-                result.add(reservation);
-            }
-        }
-        return result;
-    }
-
-    @Override
     public Reservation add(Reservation reservation) throws DataException {
         List<Reservation> all = findForHost(reservation.getHost());
         reservation.setId(getNextId(all));

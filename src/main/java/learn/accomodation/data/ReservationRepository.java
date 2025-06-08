@@ -9,8 +9,6 @@ import java.util.List;
 public interface ReservationRepository {
     List<Reservation> findForHost(Host host);
 
-    List<Reservation> findForGuestAndHost(Guest guest, Host host);
-
     Reservation add(Reservation reservation) throws DataException;
 
     boolean update(Reservation reservation) throws DataException;
