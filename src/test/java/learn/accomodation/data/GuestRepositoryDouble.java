@@ -14,7 +14,7 @@ public class GuestRepositoryDouble implements GuestRepository{
 
     @Override
     public Guest findByEmail(String email) {
-        return GUEST;
+        return email.equalsIgnoreCase("slomas0@mediafire.com")?GUEST:null;
     }
 
     @Override

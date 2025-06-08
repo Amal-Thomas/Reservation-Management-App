@@ -24,18 +24,6 @@ class ReservationServiceTest {
             new ReservationRepositoryDouble());
 
     @Test
-    void findForHost() {
-    }
-
-    @Test
-    void findForGuestAndHost() {
-    }
-
-    @Test
-    void findFutureReservations() {
-    }
-
-    @Test
     void shouldNotAddNullGuest() throws DataException {
         Reservation reservation = new Reservation(1,
                 HostRepositoryDouble.HOST,

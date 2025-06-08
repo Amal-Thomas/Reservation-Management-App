@@ -19,7 +19,7 @@ public class HostRepositoryDouble implements HostRepository{
 
     @Override
     public Host findByEmail(String email) {
-        return HOST;
+        return email.equalsIgnoreCase("eyearnes0@sfgate.com")? HOST:null;
     }
 
     @Override
