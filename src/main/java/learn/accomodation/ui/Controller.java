@@ -134,7 +134,7 @@ public class Controller {
     // support methods
     private Guest getGuest() {
         String guestEmail = view.getGuestEmail();
-        return guestService.findGuestByEmail(guestEmail);
+        return guestService.findByEmail(guestEmail);
     }
 
     private Host getHost() {
