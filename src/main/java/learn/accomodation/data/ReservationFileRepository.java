@@ -41,7 +41,14 @@ public class ReservationFileRepository implements ReservationRepository{
     }
 
     public List<Reservation> findForGuestAndHost(Host host, Guest guest) {
-
+        ArrayList<Reservation> reservationsForHost = new ArrayList<>(findForHost(host));
+        ArrayList<Reservation> result = new ArrayList<>();
+        for (Reservation reservation: reservationsForHost) {
+            if (reservation.getGuest().getGuestId() == guest.getGuestId()) {
+                result.add(reservation);
+            }
+        }
+        return result;
     }
 
     public Reservation add(Reservation reservation) {
