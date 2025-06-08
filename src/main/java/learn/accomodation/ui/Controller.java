@@ -72,7 +72,13 @@ public class Controller {
     private void addReservation() throws DataException {
         view.displayHeader(MainMenuOption.MAKE_A_RESERVATION.getMessage());
         Guest guest = getGuest();
+        if (guest == null) {
+            return;
+        }
         Host host = getHost();
+        if (host == null) {
+            return;
+        }
 
         view.displayHostNameAndAddress(host);
         List<Reservation> reservations = reservationService.findForHost(host);
@@ -92,7 +98,13 @@ public class Controller {
     private void updateReservation() throws DataException {
         view.displayHeader(MainMenuOption.EDIT_A_RESERVATION.getMessage());
         Guest guest = getGuest();
+        if (guest == null) {
+            return;
+        }
         Host host = getHost();
+        if (host == null) {
+            return;
+        }
 
         view.displayHostNameAndAddress(host);
         List<Reservation> reservations = reservationService.findForGuestAndHost(guest, host);
@@ -115,7 +127,13 @@ public class Controller {
     private void deleteReservation() throws DataException {
         view.displayHeader(MainMenuOption.CANCEL_A_RESERVATION.getMessage());
         Guest guest = getGuest();
+        if (guest == null) {
+            return;
+        }
         Host host = getHost();
+        if (host == null) {
+            return;
+        }
 
         view.displayHostNameAndAddress(host);
         List<Reservation> reservations = reservationService.findFutureReservations(guest, host);
