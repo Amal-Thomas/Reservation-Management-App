@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class View {
 
@@ -76,7 +78,7 @@ public class View {
         }
 
         int index = 1;
-        for (Reservation reservation : reservations) {
+        for (Reservation reservation : reservations.stream().sorted(Comparator.comparing(Reservation::getStartDate)).toList()) {
             io.printf("%d. ID: %d, %s - %s, Guest: %s, %s, Email: %s%n",
                     index++,
                     reservation.getId(),
@@ -156,7 +158,7 @@ public class View {
             io.println("No reservations found.");
             return;
         }
-        for (Reservation reservation : reservations) {
+        for (Reservation reservation : reservations.stream().sorted(Comparator.comparing(Reservation::getStartDate)).toList()) {
             io.printf("ID: %d, %s - %s, Guest: %s, %s, Email: %s%n",
                     reservation.getId(),
                     reservation.getStartDate().format(formatter),
