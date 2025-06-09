@@ -84,6 +84,9 @@ public class Controller {
         List<Reservation> reservations = reservationService.findForHost(host);
         view.displayReservations(reservations);
         Reservation reservation = view.makeReservation(guest, host);
+        if (reservation == null) {
+            return;
+        }
         Result result = reservationService.add(reservation);
 
         if (!result.isSuccess()) {
@@ -113,6 +116,9 @@ public class Controller {
             return;
         }
         Reservation newReservation = view.update(oldReservation);
+        if (newReservation == null) {
+            return;
+        }
         Result result = reservationService.update(newReservation);
 
         if (!result.isSuccess()) {

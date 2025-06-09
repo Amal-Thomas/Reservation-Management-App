@@ -5,11 +5,13 @@ import learn.accomodation.models.Host;
 import learn.accomodation.models.Reservation;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class View {
 
     private final ConsoleIO io;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     public View(ConsoleIO io) {
         this.io = io;
@@ -33,9 +35,9 @@ public class View {
         displayHeader(String.format(
                 "Editing Reservation %d", oldReservation.getId()));
         LocalDate newStartDate = io.readLocalDate(String.format(
-                "Start (%s): ", oldReservation.getStartDate()), true);
+                "Start (%s): ", oldReservation.getStartDate().format(formatter)), true);
         LocalDate newEndDate = io.readLocalDate(String.format(
-                "End (%s): ", oldReservation.getEndDate()), true);
+                "End (%s): ", oldReservation.getEndDate().format(formatter)), true);
 
         if (newStartDate == null && newEndDate == null) {
             return oldReservation;
@@ -60,7 +62,7 @@ public class View {
         if (io.readBoolean("Is this okay? [y/n]: ")) {
             return newReservation;
         }
-        return oldReservation;
+        return null;
     }
 
     public Reservation chooseReservation(List<Reservation> reservations) {
@@ -74,8 +76,8 @@ public class View {
             io.printf("%d. ID: %d, %s - %s, Guest: %s, %s, Email: %s%n",
                     index++,
                     reservation.getId(),
-                    reservation.getStartDate(),
-                    reservation.getEndDate(),
+                    reservation.getStartDate().format(formatter),
+                    reservation.getEndDate().format(formatter),
                     reservation.getGuest().getLastName(),
                     reservation.getGuest().getFirstName(),
                     reservation.getGuest().getEmail()
@@ -100,7 +102,12 @@ public class View {
         reservation.setStartDate(io.readLocalDate("Start (MM/dd/yyyy): "));
         reservation.setEndDate(io.readLocalDate("End (MM/dd/yyyy): "));
         reservation.setTotal(reservation.calculateTotal());
-        return reservation;
+
+        displaySummary(reservation);
+        if (io.readBoolean("Is this okay? [y/n]: ")) {
+            return reservation;
+        }
+        return null;
     }
 
     public String getHostEmail() {
@@ -146,8 +153,8 @@ public class View {
         for (Reservation reservation : reservations) {
             io.printf("ID: %d, %s - %s, Guest: %s, %s, Email: %s%n",
                     reservation.getId(),
-                    reservation.getStartDate(),
-                    reservation.getEndDate(),
+                    reservation.getStartDate().format(formatter),
+                    reservation.getEndDate().format(formatter),
                     reservation.getGuest().getLastName(),
                     reservation.getGuest().getFirstName(),
                     reservation.getGuest().getEmail()
@@ -161,8 +168,8 @@ public class View {
 
     public void displaySummary(Reservation reservation) {
         displayHeader("Summary");
-        io.println(reservation.getStartDate().toString());
-        io.println(reservation.getEndDate().toString());
-        io.println(reservation.getTotal().toString());
+        io.println("Start: "+reservation.getStartDate().format(formatter));
+        io.println("End: "+reservation.getEndDate().format(formatter));
+        io.println("Total: "+reservation.getTotal().toString());
     }
 }
