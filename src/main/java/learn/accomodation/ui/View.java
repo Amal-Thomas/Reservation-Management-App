@@ -4,6 +4,8 @@ import learn.accomodation.models.Guest;
 import learn.accomodation.models.Host;
 import learn.accomodation.models.Reservation;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -57,7 +59,9 @@ public class View {
         newReservation.setGuest(oldReservation.getGuest());
         newReservation.setId(oldReservation.getId());
 
-        newReservation.setTotal(newReservation.calculateTotal());
+        if (newReservation.getStartDate().isBefore(newReservation.getEndDate())) {
+            newReservation.setTotal(newReservation.calculateTotal());
+        }
         displaySummary(newReservation);
         if (io.readBoolean("Is this okay? [y/n]: ")) {
             return newReservation;
@@ -101,7 +105,9 @@ public class View {
         reservation.setGuest(guest);
         reservation.setStartDate(io.readLocalDate("Start (MM/dd/yyyy): "));
         reservation.setEndDate(io.readLocalDate("End (MM/dd/yyyy): "));
-        reservation.setTotal(reservation.calculateTotal());
+        if (reservation.getStartDate().isBefore(reservation.getEndDate())) {
+            reservation.setTotal(reservation.calculateTotal());
+        }
 
         displaySummary(reservation);
         if (io.readBoolean("Is this okay? [y/n]: ")) {
@@ -168,8 +174,15 @@ public class View {
 
     public void displaySummary(Reservation reservation) {
         displayHeader("Summary");
-        io.println("Start: "+reservation.getStartDate().format(formatter));
-        io.println("End: "+reservation.getEndDate().format(formatter));
-        io.println("Total: "+reservation.getTotal().toString());
+        io.println("Start: " + reservation.getStartDate().format(formatter));
+        io.println("End: " + reservation.getEndDate().format(formatter));
+        BigDecimal total = reservation.getTotal();
+        if (total == null) {
+            io.println("Total: ERROR in calculating Total");
+        } else if (total.compareTo(new BigDecimal(0)) > 0) {
+            io.println("Total: $" + total.setScale(2, RoundingMode.HALF_UP));
+        } else {
+            io.println("Total: ERROR in calculating Total");
+        }
     }
 }
