@@ -92,7 +92,7 @@ public class ConsoleIO {
 
     public LocalDate readLocalDate(String prompt, boolean isEditing) {
         while (true) {
-            String input = readRequiredString(prompt);
+            String input = readString(prompt);
             if (isEditing && input.isBlank()) {
                 return null;
             }

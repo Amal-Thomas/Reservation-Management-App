@@ -80,8 +80,8 @@ public class Reservation {
         if (standardRate == null || weekendRate == null || endDate.isBefore(startDate)) {
             return null;
         }
-        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-            if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+        for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
+            if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.FRIDAY) {
                 total = total.add(weekendRate);
             } else {
                 total = total.add(standardRate);

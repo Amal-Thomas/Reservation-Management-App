@@ -61,6 +61,17 @@ public class ReservationService {
             return result;
         }
 
+        //check for duplicates
+        for (Reservation r: findFutureReservations(reservation.getGuest(), reservation.getHost())) {
+            if (r.getId() == reservation.getId()) {
+                if (r.getStartDate().isEqual(reservation.getStartDate()) &&
+                        r.getEndDate().isEqual(reservation.getEndDate())) {
+                    result.addMessage("No edits made to the reservation.");
+                    return result;
+                }
+            }
+        }
+
         boolean isUpdated = reservationRepository.update(reservation);
         if (isUpdated) {
             result.setPayload(reservation);

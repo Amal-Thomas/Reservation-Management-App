@@ -37,19 +37,27 @@ public class View {
         LocalDate newEndDate = io.readLocalDate(String.format(
                 "End (%s): ", oldReservation.getEndDate()), true);
 
+        if (newStartDate == null && newEndDate == null) {
+            return oldReservation;
+        } //made no edits
+
         if (newStartDate != null) {
             newReservation.setStartDate(newStartDate);
+        } else {
+            newReservation.setStartDate(oldReservation.getStartDate());
         }
         if (newEndDate != null) {
             newReservation.setEndDate(newEndDate);
+        } else {
+            newReservation.setEndDate(oldReservation.getEndDate());
         }
+        newReservation.setHost(oldReservation.getHost());
+        newReservation.setGuest(oldReservation.getGuest());
+        newReservation.setId(oldReservation.getId());
 
         newReservation.setTotal(newReservation.calculateTotal());
         displaySummary(newReservation);
         if (io.readBoolean("Is this okay? [y/n]: ")) {
-            newReservation.setHost(oldReservation.getHost());
-            newReservation.setGuest(oldReservation.getGuest());
-            newReservation.setId(oldReservation.getId());
             return newReservation;
         }
         return oldReservation;
@@ -64,7 +72,7 @@ public class View {
         int index = 1;
         for (Reservation reservation : reservations) {
             io.printf("%d. ID: %d, %s - %s, Guest: %s, %s, Email: %s%n",
-                    index,
+                    index++,
                     reservation.getId(),
                     reservation.getStartDate(),
                     reservation.getEndDate(),
@@ -76,7 +84,7 @@ public class View {
         index--;
 
         io.println("0: Exit");
-        String message = String.format("Select a forager by their index [0-%s]: ", index);
+        String message = String.format("Select a reservation by their index [0-%s]: ", index);
 
         index = io.readInt(message, 0, index);
         if (index <= 0) {

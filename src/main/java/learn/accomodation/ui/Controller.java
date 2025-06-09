@@ -146,7 +146,7 @@ public class Controller {
         if (!result.isSuccess()) {
             view.displayStatus(false, result.getMessages());
         } else {
-            String successMessage = String.format("Reservation %s deleted.", result.getPayload().getId());
+            String successMessage = String.format("Reservation %s deleted.", reservation.getId());
             view.displayStatus(true, successMessage);
         }
         view.enterToContinue();
@@ -155,11 +155,19 @@ public class Controller {
     // support methods
     private Guest getGuest() {
         String guestEmail = view.getGuestEmail();
-        return guestService.findByEmail(guestEmail);
+        Guest guest = guestService.findByEmail(guestEmail);
+        if (guest == null) {
+            view.displayStatus(false, "Guest not found.");
+        }
+        return guest;
     }
 
     private Host getHost() {
         String hostEmail = view.getHostEmail();
-        return hostService.findByEmail(hostEmail);
+        Host host = hostService.findByEmail(hostEmail);
+        if (host == null) {
+            view.displayStatus(false, "Host not found.");
+        }
+        return host;
     }
 }
