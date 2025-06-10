@@ -78,7 +78,8 @@ public class View {
         }
 
         int index = 1;
-        for (Reservation reservation : reservations.stream().sorted(Comparator.comparing(Reservation::getStartDate)).toList()) {
+        reservations = reservations.stream().sorted(Comparator.comparing(Reservation::getStartDate)).toList();
+        for (Reservation reservation : reservations) {
             io.printf("%d. ID: %d, %s - %s, Guest: %s, %s, Email: %s%n",
                     index++,
                     reservation.getId(),
